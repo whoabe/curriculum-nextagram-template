@@ -1,1 +1,55 @@
-<h1>Users#new</h1>
+{% extends "_layout.html" %}
+
+{% block title %}
+  New Users
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--  -->
+
+<h1>Sign Up</h1>
+<br>
+<form action="{{ url_for('users.create') }}" method="POST">
+  <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="ImYwNzNlZWQ1ZjhjZTk5OTUxN2VjZWY0NjQ1MTM4ZDhlNDEyNGI2NWQi.D-iLpg.nZXfy3tUqy2BRmS-UfzNbgwjXJo"> -->
+
+  <div class="form-group">
+    <label for="username">Username:</label> <input class="form-control" id="username" name="username" type="text" value="">
+  </div>
+
+  <!-- <label for="username">username</label>
+  <p><input type = "text" name = "username"/></p> -->
+
+  <div class="form-group">
+    <label for="email">Email:</label> <input class="form-control" id="email" name="email" type="text" value="">
+  </div>
+
+  <!-- <label for="email">email</label>
+  <p><input type = "text" name = "email"/></p> -->
+
+  <div class="form-group">
+    <label for="password">Password:</label> <input class="form-control" id="password" name="password" type="password" value="">
+  </div>
+  
+  <!-- <label for="password">password</label>
+  <p><input type = "text" name = "password"/></p>   -->
+
+  <button type="submit" class="btn btn-primary">Add User</button>
+</form>
+
+
+
+{% endblock %} 

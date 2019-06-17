@@ -17,8 +17,23 @@
     {% block header %}{% endblock %}
     <title>{% block title %}{% endblock %}NEXTAGRAM</title>
   </head>
+
   <body>
-    {% block content %}
-    {% endblock %}
+
+    <div>
+        NEXTAGRAM:
+        <a href="{{ url_for('index') }}">Home</a>
+        {% if current_user.is_anonymous %}
+        <a href="{{ url_for('login_x') }}">Login</a>
+        <a href="{{ url_for('users.new') }}">Sign Up</a>
+        <!-- need to also include sign up -->
+        {% else %}
+        <a href="{{ url_for('logout') }}">Logout</a>
+        {% endif %}
+    </div>
+
+    <hr>
+    {% block content %}{% endblock %}
   </body>
+  
 </html>
