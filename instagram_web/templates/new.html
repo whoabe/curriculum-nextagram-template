@@ -1,0 +1,39 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  New Users
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--  -->
+
+<h1>Sign Up</h1>
+<br>
+<form action="{{ url_for('create') }}" method="POST">
+  <label for="username">username</label>
+  <p><input type = "text" name = "username"/></p>
+  <label for="email">email</label>
+  <p><input type = "text" name = "email"/></p>
+  <label for="password">password</label>
+  <p><input type = "text" name = "password"/></p>  
+
+  <button type="submit" class="btn btn-primary">Add User</button>
+</form>
+
+
+
+{% endblock %} 
