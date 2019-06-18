@@ -1,5 +1,6 @@
 import os
 import config
+from config import Config
 from flask import Flask, render_template, request, flash, redirect, url_for
 from models.base_model import db
 from models.user import User
@@ -8,6 +9,10 @@ from flask_login import current_user, login_user, logout_user
 from models.user import User
 from flask_login import LoginManager
 from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.utils import secure_filename
+
+from helpers import upload_file_to_s3
+
 
 
 #login_manager calls the LoginManger function
@@ -82,35 +87,52 @@ def logout():
     flash("Logged out")
     return redirect(url_for('home'))
 
-# @app.route('/users/<id>/edit', methods = ['GET'])
-# def edit(id):
-#     #shows the form to edit
-#     #check if the user is logged in or not, if yes, get the user id
-#     user = User.get_by_id(id)
-#     return render_template('users/user_about.html', user = user)
+# ##########################
+@app.route('/upload', methods=["GET"])
+def upload_form():
+    #shows the form to upload user profile image
+    return render_template('upload.html')
 
 
-# @app.route('/users/<id>', methods = ['POST'])
-# def update():
-#     pass
-#     # password = request.form['password']
-#     # if check_password_hash(user.password, password):
-#     #     #update the user
-#     #     username = request.form['username']
-#     #     email = request.form['email']
-#     #     password = generate_password_hash(request.form['new_password'])
+@app.route("/", methods=["POST"])
+def upload_file():
 
-#     #     user = User(username =username, new_password=password, email=email)
+	# A 
+    #  We check the request.files object for a user_file key. (user_file is the name of the file input on our form). If it’s not there, we return an error message.
 
-#     #     if user.save():
-#     #         login_user(user)
-#     #         flash("Sucessfully signed up")
-#     #         return redirect(url_for('home'))
-#     #     else:
-#     #         return render_template('new.html', username = request.form['username'], email =request.form['email'], password = request.form['password'])
-#     #         flash("User Updated")
-#     #         return redirect(url_for('home'))
-#     # else:
-#     #     flash("Invalid password")
-#     #     return render_template('users/user_about.html', user = user)
-    
+    if "user_file" not in request.files:
+        flash("No user_file key in request.files")
+        return render_template('upload.html')
+
+	# B
+    # If the key is in the object, we save it in a variable called file.
+    file    = request.files["user_file"]
+
+    """
+        These attributes are also available
+
+        file.filename               # The actual name of the file
+        file.content_type
+        file.content_length
+        file.mimetype
+
+    """
+
+	# C.
+    # We check the filename attribute on the object and if it’s empty, it means the user sumbmitted an empty form, so we return an error message.
+    if file.filename == "":
+        flash("Please select a file")
+        return render_template('upload.html')
+
+	# D.
+    # Finally we check that there is a file and that it has an allowed filetype (this is what the allowed_file function does, you can check it out in the flask docs).
+
+    if file and 'image' in file.content_type:
+        file.filename = secure_filename(file.filename)
+        # secure_filename = Pass it a filename and it will return a secure version of it. This filename can then safely be stored on a regular file system and passed to os.path.join(). The filename returned is an ASCII only string for maximum portability.
+        output = upload_file_to_s3(file, Config.S3_BUCKET)
+        return str(output)
+
+    else:
+        flash('wrong content type')
+        return render_template('upload.html')

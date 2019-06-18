@@ -28,6 +28,7 @@
         <a href="{{ url_for('users.new') }}">Sign Up</a>
         <!-- need to also include sign up -->
         {% else %}
+        <a href="{{ url_for('users.edit') }}">Edit</a>
         <a href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
     </div>

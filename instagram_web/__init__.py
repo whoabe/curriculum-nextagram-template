@@ -1,3 +1,4 @@
+#initializes your app, creating a flask app instance 
 from app import app
 from flask import render_template
 from instagram_web.blueprints.users.views import users_blueprint
@@ -26,3 +27,4 @@ def page_not_found(e):
 @app.route("/")
 def home():
     return render_template('home.html')
+

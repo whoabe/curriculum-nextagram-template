@@ -51,12 +51,11 @@ def index():
     return "USERS"
 
 
-@users_blueprint.route('/<id>/edit', methods=["GET"])
-def edit(id):
+@users_blueprint.route('/edit', methods=["GET"])
+def edit():
     #shows the form to edit
     #check if the user is logged in or not, if yes, get the user id
-    user = User.get_by_id(id)
-    return render_template('users/user_about.html', user = user)
+    return render_template('users/user_about.html', user = current_user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
@@ -77,7 +76,7 @@ def update(id):
             return redirect(url_for('home'))
         else:
             return render_template('new.html', username = request.form['username'], email =request.form['email'], password = request.form['password'])
-            return redirect(url_for('home'))
+            # return redirect(url_for('home'))
     else:
         flash("Invalid password")
         return render_template('users/user_about.html', user = user)

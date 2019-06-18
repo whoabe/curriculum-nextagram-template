@@ -1,0 +1,38 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+  Edit User
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--  -->
+
+<h1>Upload Your Files</h1>
+
+<form action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+<!-- enctype attribute specifies how the form-data should be encoded when submitting it to the server. -->
+
+    <!-- <label for="user_file">Upload Your File</label>
+    <br></br> -->
+    <input type="file" name="user_file">
+    <br></br>
+    <button type="submit">Upload</button>
+
+</form>
+
+
+{% endblock %} 
