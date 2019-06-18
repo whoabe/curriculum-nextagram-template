@@ -130,8 +130,15 @@ def upload_file():
     if file and 'image' in file.content_type:
         file.filename = secure_filename(file.filename)
         # secure_filename = Pass it a filename and it will return a secure version of it. This filename can then safely be stored on a regular file system and passed to os.path.join(). The filename returned is an ASCII only string for maximum portability.
-        output = upload_file_to_s3(file, Config.S3_BUCKET)
-        return str(output)
+        # output = upload_file_to_s3(file, Config.S3_BUCKET)
+        upload_file_to_s3(file, Config.S3_BUCKET)
+        user = current_user
+        user.profile_image = str(current_user.id) + "-" + file.filename
+        if user.save():
+            flash("profile image updated")
+            return redirect(url_for('upload_form'))
+        # return str(output)
+
 
     else:
         flash('wrong content type')
