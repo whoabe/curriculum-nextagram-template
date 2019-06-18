@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect, url_for
 from models.user import User
 from flask_wtf.csrf import CSRFProtect
 from flask_login import login_user
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import current_user
 
 # csrf = CSRFProtect(app)
@@ -36,7 +36,7 @@ def create():
 
     if user.save():
         login_user(user)
-        flash("flash saved")
+        flash("Sucessfully signed up")
         return redirect(url_for('home'))
     else:
         return render_template('new.html', username = request.form['username'], email =request.form['email'], password = request.form['password'])
@@ -51,11 +51,34 @@ def index():
     return "USERS"
 
 
-@users_blueprint.route('/<id>/edit', methods=['GET'])
+@users_blueprint.route('/<id>/edit', methods=["GET"])
 def edit(id):
-    pass
+    #shows the form to edit
+    #check if the user is logged in or not, if yes, get the user id
+    user = User.get_by_id(id)
+    return render_template('users/user_about.html', user = user)
 
 
 @users_blueprint.route('/<id>', methods=['POST'])
 def update(id):
-    pass
+    password = request.form['password']
+    user = User.get_by_id(id)
+    if check_password_hash(user.password, password):
+        #update the user
+        username = request.form['username']
+        email = request.form['email']
+        password = generate_password_hash(request.form['new_password'])
+        #new_password is pulled from the html jinja
+
+        result = User.update(username =username, password=password, email=email).where(User.id == user.id).execute()
+
+        if result:
+            flash("Sucessfully updated")
+            return redirect(url_for('home'))
+        else:
+            return render_template('new.html', username = request.form['username'], email =request.form['email'], password = request.form['password'])
+            return redirect(url_for('home'))
+    else:
+        flash("Invalid password")
+        return render_template('users/user_about.html', user = user)
+    

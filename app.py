@@ -7,7 +7,7 @@ import peeweedbevolve
 from flask_login import current_user, login_user, logout_user
 from models.user import User
 from flask_login import LoginManager
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 
 
 #login_manager calls the LoginManger function
@@ -82,3 +82,35 @@ def logout():
     flash("Logged out")
     return redirect(url_for('home'))
 
+# @app.route('/users/<id>/edit', methods = ['GET'])
+# def edit(id):
+#     #shows the form to edit
+#     #check if the user is logged in or not, if yes, get the user id
+#     user = User.get_by_id(id)
+#     return render_template('users/user_about.html', user = user)
+
+
+# @app.route('/users/<id>', methods = ['POST'])
+# def update():
+#     pass
+#     # password = request.form['password']
+#     # if check_password_hash(user.password, password):
+#     #     #update the user
+#     #     username = request.form['username']
+#     #     email = request.form['email']
+#     #     password = generate_password_hash(request.form['new_password'])
+
+#     #     user = User(username =username, new_password=password, email=email)
+
+#     #     if user.save():
+#     #         login_user(user)
+#     #         flash("Sucessfully signed up")
+#     #         return redirect(url_for('home'))
+#     #     else:
+#     #         return render_template('new.html', username = request.form['username'], email =request.form['email'], password = request.form['password'])
+#     #         flash("User Updated")
+#     #         return redirect(url_for('home'))
+#     # else:
+#     #     flash("Invalid password")
+#     #     return render_template('users/user_about.html', user = user)
+    
