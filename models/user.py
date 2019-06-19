@@ -16,14 +16,21 @@ class User(BaseModel, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+#    def validate(self):
+#       duplicate_stores = Store.get_or_none(Store.name == self.name)
+
+#     if duplicate_stores:
+#         self.errors.append('Store name not unique')
+
+
     
     profile_image = pw.CharField(null = True)
     # can use default = to a string to set it as a deafault for everyone
 
 
-@hybrid_property
-def profile_image_url(self):
-    return Config.S3_LOCATION + self.profile_image
+    @hybrid_property
+    def profile_image_url(self):
+        return Config.S3_LOCATION + self.profile_image
 # Now, you can access profile image url like this:
 # user.profile_image_url
 

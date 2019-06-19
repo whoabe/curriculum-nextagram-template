@@ -87,11 +87,12 @@ def logout():
     flash("Logged out")
     return redirect(url_for('home'))
 
-# ##########################
+# ------------------------------------------------------------------------
 @app.route('/upload', methods=["GET"])
 def upload_form():
     #shows the form to upload user profile image
-    return render_template('upload.html')
+    return render_template('users/user_edit.html', user = current_user)
+    # changed from upload.html to user_edit.html
 
 
 @app.route("/", methods=["POST"])
@@ -102,7 +103,7 @@ def upload_file():
 
     if "user_file" not in request.files:
         flash("No user_file key in request.files")
-        return render_template('upload.html')
+        return render_template('users/user_edit.html', user = current_user)
 
 	# B
     # If the key is in the object, we save it in a variable called file.
@@ -122,7 +123,7 @@ def upload_file():
     # We check the filename attribute on the object and if it’s empty, it means the user sumbmitted an empty form, so we return an error message.
     if file.filename == "":
         flash("Please select a file")
-        return render_template('upload.html')
+        return render_template('users/user_edit.html', user = current_user)
 
 	# D.
     # Finally we check that there is a file and that it has an allowed filetype (this is what the allowed_file function does, you can check it out in the flask docs).
@@ -136,10 +137,10 @@ def upload_file():
         user.profile_image = str(current_user.id) + "-" + file.filename
         if user.save():
             flash("profile image updated")
-            return redirect(url_for('upload_form'))
+            return render_template('users/user_edit.html', user = current_user)
         # return str(output)
 
 
     else:
         flash('wrong content type')
-        return render_template('upload.html')
+        return render_template('users/user_edit.html', user = current_user)

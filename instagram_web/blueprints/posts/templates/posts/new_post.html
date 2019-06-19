@@ -1,0 +1,39 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+
+  Profile Page
+
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--  -->
+
+<h1>New Post</h1>
+<h2>{{current_user.username}}</h2>
+
+<br>
+<h2>Upload a post</h2>
+<form action="{{ url_for('posts.image_upload', id=id) }}" method="POST" enctype="multipart/form-data">
+
+  <input type="file" name="user_file">
+  <br></br>
+  <button type="submit">Upload</button> 
+
+</form>
+
+{% endblock %} 
