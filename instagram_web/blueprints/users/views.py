@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
 from models.user import User
 from config import Config
-from models.images import Image
+from models.post import Post
 from flask_wtf.csrf import CSRFProtect
 from flask_login import login_user
 from werkzeug.security import generate_password_hash, check_password_hash

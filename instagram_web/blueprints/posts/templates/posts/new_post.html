@@ -28,7 +28,7 @@
 
 <br>
 <h2>Upload a post</h2>
-<form action="{{ url_for('posts.image_upload', id=id) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ url_for('posts.image_upload') }}" method="POST" enctype="multipart/form-data">
 
   <input type="file" name="user_file">
   <br></br>

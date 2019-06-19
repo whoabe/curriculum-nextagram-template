@@ -6,9 +6,10 @@ import peewee as pw
 # from config import Config
 # from playhouse.hybrid import hybrid_property
 
-class Image(BaseModel):
-    user = pw.ForeignKeyField(User, backref = 'images', on_delete='cascade')
-    image = pw.CharField(null = True)
+class Post(BaseModel):
+    user = pw.ForeignKeyField(User, backref = 'posts', on_delete='cascade')
+    image_url = pw.CharField(null = True)
+    caption = pw.CharField(null = True)
     # can use default = to a string to set it as a deafault for everyone
 
 
