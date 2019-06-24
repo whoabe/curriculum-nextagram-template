@@ -59,11 +59,11 @@ def image_upload():
         # output = upload_file_to_s3(file, Config.S3_BUCKET)
         upload_file_to_s3(file, Config.S3_BUCKET)
 
-        img_url = str(current_user.id) + "-" + file.filename
+        img_filename = str(current_user.id) + "-" + file.filename
         
         user = current_user
         
-        post = Post(user_id = user.id, image_url = img_url)
+        post = Post(user_id = user.id, image = img_filename)
 
         if post.save():
             flash("post added")

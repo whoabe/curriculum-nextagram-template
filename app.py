@@ -2,17 +2,17 @@ import os
 import config
 from config import Config
 from flask import Flask, render_template, request, flash, redirect, url_for
-from models.base_model import db
+from models.base_model import db    
 from models.user import User
 import peeweedbevolve
 from flask_login import current_user, login_user, logout_user
-from models.user import User
 from flask_login import LoginManager
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
 
 from helpers import upload_file_to_s3
 
+from google_oauth import oauth
 
 
 #login_manager calls the LoginManger function
@@ -50,11 +50,11 @@ def _db_close(exc):
 def load_user(user_id):
     return User.get_or_none(User.id == user_id)
 
-@app.route("/")
+@app.route("/", methods = ['GET'])
 def index():
     return render_template('home.html')
 
-@app.route("/login")
+@app.route("/login", methods = ['GET'])
 def login_x():
     if current_user.is_authenticated:
         return redirect(url_for('home'))
@@ -85,7 +85,7 @@ def login():
 def logout():
     logout_user()
     flash("Logged out")
-    return redirect(url_for('home'))
+    return redirect(url_for('users.index_users'))
 
 # ------------------------------------------------------------------------
 @app.route('/upload', methods=["GET"])
@@ -144,3 +144,35 @@ def upload_file():
     else:
         flash('wrong content type')
         return render_template('users/user_edit.html', user = current_user)
+
+
+# --------------
+# --------------
+@app.route('/sessions/authorize/google', methods=['GET'])
+def authorize():
+    token = oauth.google.authorize_access_token()
+
+    if token:
+        email = oauth.google.get(
+            'https://www.googleapis.com/oauth2/v2/userinfo').json()['email']
+        user = User.get_or_none(User.email == email)
+        if not user:
+            flash('No user registered with this Google Email!', 'danger')
+            return redirect(url_for('sessions.new'))
+
+    login_user(user)
+    flash(f'Welcome back {user.username}')
+    return redirect(url_for('users.index_users'))
+    # return render_template('home.html')
+
+
+# @app.route('/facebook_login', methods=['GET'])
+# def facebook_login():
+#     redirect_uri = url_for('sessions.facebook_authorize', _external=True)
+#     return fb_oauth.facebook.authorize_redirect(redirect_uri, state=session['csrf_token'])
+
+
+@app.route('/google_login', methods=['GET'])
+def google_login():
+    redirect_uri = url_for('authorize', _external=True)
+    return oauth.google.authorize_redirect(redirect_uri)

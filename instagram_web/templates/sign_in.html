@@ -31,10 +31,20 @@
     </div>
 
     <div class="form-group">
-        <label for="password">Password:</label> <input class="form-control" id="password" name="password" type="password" value="">
+        <label for="password">Password:</label> 
+        <input class="form-control" id="password" name="password" type="password" value="">
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>
 </form>
+
+<!-- https://developers.google.com/identity/sign-in/web/build-button -->
+<a
+  class="btn btn-outline-success mt-2"
+  href="{{ url_for('google_login') }}"
+  ><i class="fab fa-google"></i> Login With Google</a
+>
+
+
 
 {% endblock %}

@@ -5,7 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='image/favicon.ico') }}">
-
+    <link
+    href="https://fonts.googleapis.com/css?family=Pacifico|Roboto"
+    rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
     {% assets "home_css" %}
       <link rel="stylesheet" href="{{ ASSET_URL }}">
     {% endassets %}
@@ -19,26 +28,101 @@
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white p-4">
+      <a class="navbar-brand" href="{{ url_for('users.index_users') }}">
+        <img
+          src="http://www.transparentpng.com/thumb/logo-instagram/SKq9yH-black-and-white-instagram-logo-png.png"
+          width="30"
+          height="30"
+          class="d-inline-block align-top"
+          alt=""
+        />
+        Abegram
+      </a>
+      <!-- <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      > -->
+      <!-- What does this button do? -->
+      <form class="form-inline my-2 my-lg-0">
+        <input
+          class="form-control mr-sm-2"
+          type="search"
+          placeholder="Search"
+          aria-label="Search"
+        />
+      </form>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+          {% if current_user.is_authenticated %}
 
-    <div>
-        NEXTAGRAM:
-        <a href="{{ url_for('index') }}">Home</a>
-        {% if current_user.is_anonymous %}
-        <a href="{{ url_for('login_x') }}">Login</a>
-        <a href="{{ url_for('users.new') }}">Sign Up</a>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('posts.image_form') }}"
+              ><h4><i class="far fa-compass"></i></h4
+            ></a>
+          </li>
 
-        {% else %}
-        
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('users.index_users') }}"
+              ><h4><i class="far fa-heart"></i></h4
+            ></a>
+          </li>
+          <!-- should open up a dropdown for follow requests -->
 
-        <a href="{{ url_for('users.profile_page', id = current_user.id) }}">Profile Page</a>
+          <li class="nav-item">
+            <a 
+            class="nav-link" 
+            href="{{ url_for('users.profile_page', id = current_user.id) }}"
+            ><h4><i class="far fa-user"></i></h4></a>
+          </li>
+          <li class="nav-item">
+            <a 
+            class="nav-link" 
+            href="{{ url_for('logout') }}"
+            ><h4></h4>Sign Out</a>
+          </li>
+          {% else %}
+          <!-- if not signed in -->
+          <li class="nav-item">
+            <a 
+            class="nav-link" 
+            href="{{ url_for('login_x') }}"
+            ><h4></h4>Sign In</a>
+          </li>
+          <li class="nav-item">
+            <a 
+            class="nav-link" 
+            href="{{ url_for('users.new') }}"
+            ><h4></h4>Sign Up</a>
+          </li>
+          {% endif %}
 
-        <a href="{{ url_for('posts.image_form') }}">New_Post</a>
 
-        <a href="{{ url_for('users.edit', id = current_user.id) }}">Edit</a>
+      <!-- <div>
+          ABEGRAM:
+           <a href="{{ url_for('users.index_users') }}">Home</a>
+          {% if current_user.is_anonymous %}
+          <a href="{{ url_for('login_x') }}">Login</a>
+          <a href="{{ url_for('users.new') }}">Sign Up</a>
 
-        <a href="{{ url_for('logout') }}">Logout</a>
-        {% endif %}
-    </div>
+          {% else %}
+          
+
+          <a href="{{ url_for('users.profile_page', id = current_user.id) }}">Profile Page</a>
+
+          <a href="{{ url_for('posts.image_form') }}">New_Post</a>
+
+          <a href="{{ url_for('users.edit', id = current_user.id) }}">Edit_Profile</a>
+
+          <a href="{{ url_for('logout') }}">Logout</a>
+          {% endif %}
+      </div> -->
+    </nav>
 
     <hr>
     {% block content %}{% endblock %}

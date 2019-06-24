@@ -1,7 +1,17 @@
 import boto3, botocore
 from config import Config
 from flask_login import current_user
+import braintree
 # S3_KEY, S3_SECRET, S3_BUCKET
+
+gateway = braintree.BraintreeGateway(
+    braintree.Configuration(
+        braintree.Environment.Sandbox,
+        merchant_id=Config.MERCHANT_ID,
+        public_key=Config.PUBLIC_KEY,
+        private_key=Config.PRIVATE_KEY
+    )
+)
 
 s3 = boto3.client(
    "s3",

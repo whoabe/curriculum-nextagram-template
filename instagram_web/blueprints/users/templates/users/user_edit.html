@@ -24,7 +24,13 @@
 <h1>Edit User</h1>
 <br>
 
+<!-- toggle switch/checkbox here for making profile private -->
 <form action="{{ url_for('users.update', id = current_user.id) }}" method="POST">
+    <div class="form-group">
+     <input type="checkbox" name="privacy" id="privacy" value = "{{ user.is_private }}"> Private Profile
+    </div>  
+    <br>
+
     <div class="form-group">
       <label for="username">Username:</label> <input class="form-control" id="username" name="username" type="text" value="{{ user.username }}">
     </div>

@@ -1,0 +1,57 @@
+{% extends "_layout.html" %}
+
+{% block title %}
+
+  Abegram
+
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+<!--  -->
+
+<h1>Home</h1>
+<br>
+
+{% for i in user %}
+
+  <img src="{{i.user.profile_image_url}}" alt="Pic" height="50" width="50">
+  {{i.user.username}}
+  <!-- ... button for report inappropriate, unfollow, go to post, embed, share, copy link, cancel -->
+  <br>
+  {{i.image_url}}
+  <img src="{{i.post_image_url}}" alt="Pic" height="600" width="600">
+  <!-- like comment share bookmark -->
+  <br>
+  <!-- how many likes -->
+  <br>
+  <!-- comments -->
+  <br>
+  <!-- add a comment -->
+{% endfor %}
+
+
+<!-- {% for user in user %}
+    {{user.username}}
+    {% for post in user.posts %}
+        {{post.image_url}}
+        <img src="{{post.post_image_url}}" alt="Profile Pic" height="150" width="150">
+    {% endfor %}
+<br>
+{% endfor %} -->
+
+
+{% endblock %} 

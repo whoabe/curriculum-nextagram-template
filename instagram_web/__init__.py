@@ -6,13 +6,14 @@ from instagram_web.blueprints.posts.views import posts_blueprint
 
 from flask_assets import Environment, Bundle
 from .util.assets import bundles
+from google_oauth import oauth
 
 
 assets = Environment(app)
 assets.register(bundles)
 
 
-
+oauth.init_app(app)
 
 app.register_blueprint(users_blueprint, url_prefix="/users")
 app.register_blueprint(posts_blueprint, url_prefix="/posts")
