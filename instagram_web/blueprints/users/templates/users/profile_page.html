@@ -26,7 +26,7 @@
 <!--  -->
 
 <h1>Profile Page</h1>
-<h2>{{user.username}}</h2>
+<h2>{{user.username}}</h2>  
 
 <!-- if current user = user, then show a button to edit the profile -->
 {% if user == current_user %}
@@ -52,29 +52,36 @@
   </form>
 {% endif %}
 
-<!-- Show Followers -->
-<h3>Followers</h3>
-{% for follower in followers %}
-  {{follower.username}}
-{% endfor %}
 
-<br>
-<br>
-<!-- Show Following  -->
-<h3>Following</h3>
-{% for f in following %}
-  {{f.username}}
+<!-- if the current user is in the followers or if the user is public, then show the following -->
+{% if current_user in user.followers or user.private == False or user == current_user %}
+  <!-- Show Followers -->
+  <h3>Followers</h3>
+  {% for follower in followers %}
+    {{follower.username}}
+  {% endfor %}
+
   <br>
-{% endfor %}
+  <br>
+  <!-- Show Following  -->
+  <h3>Following</h3>
+  {% for f in following %}
+    {{f.username}}
+    <br>
+  {% endfor %}
 
-<br>
+  <br>
 
-<!-- show posts -->
-<h3>Posts</h3>
-{% for post in post_query %}
-  {{post.image_url}}
-<img src="{{post.post_image_url}}" alt="Pic" height="293" width="293">
-{% endfor %}
+  <!-- show posts -->
+  <h3>Posts</h3>
+  {% for post in post_query %}
+    {{post.image_url}}
+  <img src="{{post.post_image_url}}" alt="Pic" height="293" width="293">
+  {% endfor %}
+{% else %}
+  <br>
+  <h2>Private Profile :/</h2>
+{% endif %}
 
 <!-- Braintree -->
 <!-- <div id="dropin-container"></div>

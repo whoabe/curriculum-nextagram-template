@@ -21,15 +21,30 @@
 {% endwith %}
 <!--  -->
 
-<h1>Edit User</h1>
+<h1>Edit User</h1>  
 <br>
 
 <!-- toggle switch/checkbox here for making profile private -->
 <form action="{{ url_for('users.update', id = current_user.id) }}" method="POST">
-    <div class="form-group">
-     <input type="checkbox" name="privacy" id="privacy" value = "{{ user.is_private }}"> Private Profile
-    </div>  
+
+  <div class="form-group">
+    <input type="checkbox" name="privacy" id="privacy" checked = "{{ user.is_private }}"> Private Profile
+  </div>    
+
     <br>
+
+    <!-- Default switch
+    <div class="custom-control custom-switch">
+      <input type="checkbox" class="custom-control-input" id="customSwitches">
+      <label class="custom-control-label" for="customSwitches">Toggle this switch element</label>
+    </div>
+
+    <div class="checkbox">
+      <label>
+        <input type="checkbox" data-toggle="toggle">
+        Option one is enabled
+      </label>
+    </div> -->
 
     <div class="form-group">
       <label for="username">Username:</label> <input class="form-control" id="username" name="username" type="text" value="{{ user.username }}">

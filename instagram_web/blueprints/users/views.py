@@ -94,7 +94,7 @@ def update(id):
         password = generate_password_hash(request.form['new_password'])
         #new_password is pulled from the html jinja
 
-        result = User.update(username =username, password=password, email=email, is_private = privacy).where(User.id == user.id).execute()
+        result = User.update(username =username, password=password, email=email, is_private = is_private).where(User.id == user.id).execute()
 
         if result:
             flash("Sucessfully updated")
@@ -150,9 +150,22 @@ def following(id):
     if user != current_user and current_user not in user.followers:
         # if the user is not the current user and if the current user is not already a follower of this user
         relationship = Relationship(from_user = current_user.id, to_user = user.id)
+
+        if not user.is_private:
+            relationship.approved = True
+
+        # if relationship.is_approved:
+        #     flash(f'You are now following {user.username}', 'success')
+        #     return redirect(url_for('users.profile_page',id=user.id))
+        # flash('Follow request sent! Please, wait for approval', 'success')
+        # return redirect(url_for('users.profile_page',id=user.id))
+
         if relationship.save():
-            flash("You are following user: " +user.username)
+            flash("You are now following user: " +user.username)
             return redirect(url_for('users.profile_page',id=user.id))
+
+
+
 
 @users_blueprint.route('/<id>/unfollow', methods = ["POST"])
 def unfollowing(id):
@@ -160,7 +173,7 @@ def unfollowing(id):
     x = Relationship.get_or_none(from_user = current_user.id, to_user = user.id)
     if x:
         x.delete_instance()
-        flash("You are not following user: " +user.username +"anymore")
+        flash("You are no longer following user: " +user.username)
         return redirect(url_for('users.profile_page',id=user.id))
     return redirect(url_for('users.profile_page',id=user.id))
 
