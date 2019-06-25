@@ -25,13 +25,13 @@
 {% endwith %}
 <!--  -->
 
-<h1>Profile Page</h1>
 <h2>{{user.username}}</h2>  
 
 <!-- if current user = user, then show a button to edit the profile -->
 {% if user == current_user %}
 <form action="{{ url_for('users.edit', id = current_user.id) }}">
-  <input type="submit" value="Edit Profile" />
+  <button type="submit" class="btn btn-info">Edit Profile</button>
+  <!-- <input type="submit" value="Edit Profile" /> -->
 </form>
 {% endif %}
 
@@ -57,14 +57,19 @@
 {% if current_user in user.followers or user.private == False or user == current_user %}
   <!-- Show Followers -->
   <h3>Followers</h3>
+  {{followers|length}}
+  <br>
   {% for follower in followers %}
     {{follower.username}}
+    <br>
   {% endfor %}
 
   <br>
   <br>
   <!-- Show Following  -->
   <h3>Following</h3>
+  {{ following|length }}
+  <br>
   {% for f in following %}
     {{f.username}}
     <br>

@@ -16,6 +16,8 @@ class User(BaseModel, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+
     
     @hybrid_property
     def following(self):
@@ -45,7 +47,7 @@ class User(BaseModel, UserMixin):
 
 
     
-    profile_image = pw.CharField(null = True)
+    profile_image = pw.CharField(default = "default-profile.png", null = False)
     # can use default = to a string to set it as a deafault for everyone
 
 
@@ -62,3 +64,11 @@ class User(BaseModel, UserMixin):
 
 # if not hybrid property, need to access it as a method
 # user.profile_image_url()
+
+    @hybrid_property
+    def json_info(self):
+        return {
+            'id': self.id,
+            'profileImage': self.profile_image_url,
+            'username': self.username
+        }  
