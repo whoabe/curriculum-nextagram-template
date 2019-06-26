@@ -20,36 +20,43 @@
   {% endif %}
 {% endwith %}
 <!--  -->
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h1>Sign Up</h1>
+    <br>
+    <form action="{{ url_for('users.create') }}" method="POST">
+      <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="ImYwNzNlZWQ1ZjhjZTk5OTUxN2VjZWY0NjQ1MTM4ZDhlNDEyNGI2NWQi.D-iLpg.nZXfy3tUqy2BRmS-UfzNbgwjXJo"> -->
 
-<h1>Sign Up</h1>
-<br>
-<form action="{{ url_for('users.create') }}" method="POST">
-  <!-- <input id="csrf_token" name="csrf_token" type="hidden" value="ImYwNzNlZWQ1ZjhjZTk5OTUxN2VjZWY0NjQ1MTM4ZDhlNDEyNGI2NWQi.D-iLpg.nZXfy3tUqy2BRmS-UfzNbgwjXJo"> -->
+      <div class="form-group">
+        <label for="username">Username:</label> <input class="form-control" id="username" name="username" type="text" value="" placeholder="Username">
+      </div>
 
-  <div class="form-group">
-    <label for="username">Username:</label> <input class="form-control" id="username" name="username" type="text" value="">
+      <!-- <label for="username">username</label>
+      <p><input type = "text" name = "username"/></p> -->
+
+      <div class="form-group">
+        <label for="email">Email:</label> <input class="form-control" id="email" name="email" type="text" value="" placeholder="example@example.com">
+      </div>
+
+      <!-- <label for="email">email</label>
+      <p><input type = "text" name = "email"/></p> -->
+
+      <div class="form-group">
+        <label for="password">Password:</label> <input class="form-control" id="password" name="password" type="password" placeholder="Password">
+      </div>
+
+      <!-- <div class="form-group">
+        <label for="confirm_password" >Confirm Password</label>
+        <input class="form-control" name="confirm_password" type="password" placeholder="Confirm Password"/>
+      </div> -->
+      
+      <!-- <label for="password">password</label>
+      <p><input type = "text" name = "password"/></p>   -->
+
+      <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
   </div>
-
-  <!-- <label for="username">username</label>
-  <p><input type = "text" name = "username"/></p> -->
-
-  <div class="form-group">
-    <label for="email">Email:</label> <input class="form-control" id="email" name="email" type="text" value="">
-  </div>
-
-  <!-- <label for="email">email</label>
-  <p><input type = "text" name = "email"/></p> -->
-
-  <div class="form-group">
-    <label for="password">Password:</label> <input class="form-control" id="password" name="password" type="password" value="">
-  </div>
-  
-  <!-- <label for="password">password</label>
-  <p><input type = "text" name = "password"/></p>   -->
-
-  <button type="submit" class="btn btn-primary">Add User</button>
-</form>
-
+</div>
 
 
 {% endblock %} 

@@ -39,7 +39,7 @@
 
 <!-- Follow Button -->
 {% if user != current_user and current_user not in user.followers%}
-  <form method="post" action="{{url_for('users.following', id = user.id)}}">
+  <form method="post" action="{{url_for('follows.following', id = user.id)}}">
       <p class="bold">{{user.username}} <button class="btn btn-primary">Follow</button></p>
   </form>
 {% endif %}
@@ -47,7 +47,7 @@
 
 <!-- UnFollow Button -->
 {% if user != current_user and current_user in user.followers%}
-  <form method="post" action="{{url_for('users.unfollowing', id = user.id)}}">
+  <form method="post" action="{{url_for('follows.unfollowing', id = user.id)}}">
       <p class="bold">{{user.username}} <button class="btn btn-primary">Unfollow</button></p>
   </form>
 {% endif %}
