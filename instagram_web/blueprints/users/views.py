@@ -112,8 +112,6 @@ def profile_page(id):
     #user profile page
     user = User.get_by_id(id)
 
-    client_token = gateway.client_token.generate()
-
     #followers = Followers.to_user_id == user.id
     followers = user.followers
     # User.select().join(Relationship, on=(User.id == Relationship.from_user_id)).where(Relationship.to_user_id == user.id)
@@ -133,7 +131,7 @@ def profile_page(id):
     #query for posts
     post_query = Post.select().where(Post.user_id == user.id).order_by(Post.updated_at.desc())
 
-    return render_template('users/profile_page.html', user = user, client_token = client_token, followers = followers, following = following, post_query = post_query)
+    return render_template('users/profile_page.html', user = user, followers = followers, following = following, post_query = post_query)
 
 
     #showing the profile page with the donate form
@@ -164,9 +162,7 @@ def following(id):
             flash("You are now following user: " +user.username)
             return redirect(url_for('users.profile_page',id=user.id))
 
-
-
-
+            
 @users_blueprint.route('/<id>/unfollow', methods = ["POST"])
 def unfollowing(id):
     user = User.get_by_id(id)
@@ -177,74 +173,3 @@ def unfollowing(id):
         return redirect(url_for('users.profile_page',id=user.id))
     return redirect(url_for('users.profile_page',id=user.id))
 
-
-# ----------------------------------------------------
-#  for the payment button
-# these are just example view functions
-
-TRANSACTION_SUCCESS_STATUSES = [
-    braintree.Transaction.Status.Authorized,
-    braintree.Transaction.Status.Authorizing,
-    braintree.Transaction.Status.Settled,
-    braintree.Transaction.Status.SettlementConfirmed,
-    braintree.Transaction.Status.SettlementPending,
-    braintree.Transaction.Status.Settling,
-    braintree.Transaction.Status.SubmittedForSettlement
-]
-
-# @users_blueprint.route('/checkouts/new', methods=['GET'])
-# def new_checkout():
-#     client_token = gateway.client_token.generate()
-#     # client_token = gateway.client_token.generate()
-#     return render_template('users.profile_page.html', client_token=client_token)
-
-
-
-
-@users_blueprint.route('/checkouts', methods=['POST'])
-def create_checkout():
-    result = gateway.transaction.sale({
-        'amount': request.form['amount'],
-        'payment_method_nonce': request.form['payment_method_nonce'],
-        'options': {
-            "submit_for_settlement": True
-        }
-    })
-
-    if result.is_success or result.transaction:
-        return redirect(url_for('users.show_checkout',transaction_id=result.transaction.id))
-    else:
-        for x in result.errors.deep_errors: flash('Error: %s: %s' % (x.code, x.message))
-        return redirect(url_for('users.profile_page'))
-        #need to change this url_for view function
-
-
-@users_blueprint.route('/checkouts/<transaction_id>', methods=['GET'])
-def show_checkout(transaction_id):
-    
-    transaction = gateway.transaction.find(transaction_id)
-    result = {}
-    if transaction.status in TRANSACTION_SUCCESS_STATUSES:
-        result = {
-            'header': 'Sweet Success!',
-            'icon': 'success',
-            'message': 'Your test transaction has been successfully processed. See the Braintree API response and try again.'
-        }
-    else:
-        result = {
-            'header': 'Transaction Failed',
-            'icon': 'fail',
-            'message': 'Your test transaction has a status of ' + transaction.status + '. See the Braintree API response and try again.'
-        }
-
-    return render_template('users/show.html', transaction=transaction, result=result)
-    #goes back to the user profile page
-
-# @users_blueprint.route("/client_token", methods=["GET"])
-# def client_token():
-#   return gateway.client_token.generate()
-
-# @users_blueprint.route("/checkout", methods=["POST"])
-# def create_purchase():
-#   nonce_from_the_client = request.form["payment_method_nonce"]
-#   # Use payment method nonce here...

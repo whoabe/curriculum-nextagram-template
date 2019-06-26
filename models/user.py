@@ -39,16 +39,9 @@ class User(BaseModel, UserMixin):
             .join(Relationship, on=Relationship.from_user)
             .where(Relationship.to_user == self)
             .order_by(User.username))
-#    def validate(self):
-#       duplicate_stores = Store.get_or_none(Store.name == self.name)
-
-#     if duplicate_stores:
-#         self.errors.append('Store name not unique')
-
 
     
     profile_image = pw.CharField(default = "default-profile.png", null = False)
-    # can use default = to a string to set it as a deafault for everyone
 
 
     @hybrid_property
@@ -58,12 +51,6 @@ class User(BaseModel, UserMixin):
         else:
             return "https://www.vemco.com/wp-content/uploads/2012/09/image-banner2.jpg"
 
-
-# Now, you can access profile image url like this:
-# user.profile_image_url
-
-# if not hybrid property, need to access it as a method
-# user.profile_image_url()
 
     @hybrid_property
     def json_info(self):
