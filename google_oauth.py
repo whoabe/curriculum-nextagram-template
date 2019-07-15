@@ -1,7 +1,7 @@
 from authlib.flask.client import OAuth
 import config
 import os
-
+    
 if os.getenv('FLASK_ENV') == 'production':
     
     config = eval("config.ProductionConfig")
